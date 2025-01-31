@@ -44,17 +44,18 @@ function filterQuotes() {
         return;
     }
 
-    filteredQuotes.forEach(quoteObj => {
-        const quoteElement = document.createElement("p");
-        quoteElement.textContent = quoteObj.text;
+    const randomQuote = filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
 
-        const categoryElement = document.createElement("em");
-        categoryElement.textContent = ` - ${quoteObj.category}`;
+    const quoteElement = document.createElement("p");
+    quoteElement.textContent = randomQuote.text;
 
-        quoteElement.appendChild(categoryElement);
-        quoteDisplay.appendChild(quoteElement);
-    });
+    const categoryElement = document.createElement("em");
+    categoryElement.textContent = ` - ${randomQuote.category}`;
+
+    quoteElement.appendChild(categoryElement);
+    quoteDisplay.appendChild(quoteElement);
 }
+
 
 function addQuote() {
     const newQuoteText = document.getElementById("newQuoteText").value.trim();
