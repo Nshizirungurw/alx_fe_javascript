@@ -1,6 +1,6 @@
 const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
 
-async function syncQuotesWithServer() {
+async function fetchQuotesFromServer() {
     try {
         const response = await fetch(SERVER_URL);
         const serverQuotes = await response.json();
@@ -14,7 +14,7 @@ async function syncQuotesWithServer() {
         const mergedQuotes = mergeQuotes(localQuotes, formattedQuotes);
 
         localStorage.setItem("quotes", JSON.stringify(mergedQuotes));
-        quotes = mergedQuotes;
+        quotes = mergedQuotes; 
         populateCategories();
         filterQuotes();
 
@@ -35,7 +35,7 @@ function notifyUser(message) {
     alert(message); 
 }
 
-setInterval(syncQuotesWithServer, 30000);
+setInterval(fetchQuotesFromServer, 30000);
 function resolveConflict(localQuote, serverQuote) {
     const userChoice = confirm(
         `Conflict detected!\n\nLocal: "${localQuote.text}"\nServer: "${serverQuote.text}"\n\nKeep local version?`
@@ -49,7 +49,7 @@ function mergeQuotes(localQuotes, serverQuotes) {
     serverQuotes.forEach(q => quoteMap.set(q.text, q));
     localQuotes.forEach(q => {
         if (quoteMap.has(q.text)) {
-            
+
             quoteMap.set(q.text, resolveConflict(q, quoteMap.get(q.text)));
         } else {
             quoteMap.set(q.text, q);
