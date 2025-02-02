@@ -43,7 +43,7 @@ function syncQuotes(serverQuotes) {
         localStorage.setItem("quotes", JSON.stringify(localQuotes));
         populateCategories();
         filterQuotes();
-        alert("New quotes have been synced from the server.");
+        alert("Quotes synced with server!", "success");
     }
 }
 
