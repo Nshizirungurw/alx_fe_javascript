@@ -88,7 +88,7 @@ function populateCategories() {
     categoryFilter.value = localStorage.getItem("selectedCategory") || "all";
 }
 
-function addQuote() {
+async function addQuote() {
     const text = document.getElementById("newQuoteText").value.trim();
     const category = document.getElementById("newQuoteCategory").value.trim();
 
@@ -98,11 +98,29 @@ function addQuote() {
     }
 
     const newQuote = { text, category };
+
     quotes.push(newQuote);
     localStorage.setItem("quotes", JSON.stringify(quotes));
 
     populateCategories();
     filterQuotes();
+
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newQuote)
+        });
+
+        if (!response.ok) throw new Error("Failed to post quote to server");
+
+        const result = await response.json();
+        console.log("Quote successfully posted to server:", result);
+        alert("Quote successfully added and synced with the server!");
+    } catch (error) {
+        console.error("Error posting quote:", error);
+        alert("Quote saved locally, but failed to sync with server.");
+    }
 
     document.getElementById("newQuoteText").value = "";
     document.getElementById("newQuoteCategory").value = "";
